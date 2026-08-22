@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#000000">
+
+    <!-- Barra comandi rapidi, scorrevole orizzontalmente -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#1B1B1B">
+
+        <LinearLayout
+            android:id="@+id/layoutQuickCommands"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="6dp" />
+
+    </HorizontalScrollView>
+
+    <!-- Output del terminale -->
+    <ScrollView
+        android:id="@+id/scrollOutput"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/textOutput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:textColor="#33FF33"
+            android:textSize="13sp"
+            android:padding="8dp" />
+
+    </ScrollView>
+
+    <!-- Riga di input comando -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#1B1B1B"
+        android:padding="6dp">
+
+        <EditText
+            android:id="@+id/editCommand"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="monospace"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#33FF33"
+            android:hint="comando..."
+            android:inputType="text"
+            android:imeOptions="actionSend" />
+
+        <Button
+            android:id="@+id/buttonSend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Invia" />
+
+        <Button
+            android:id="@+id/buttonManageQuick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="⚙" />
+
+    </LinearLayout>
+
+</LinearLayout>
