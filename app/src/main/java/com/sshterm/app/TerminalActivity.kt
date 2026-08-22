@@ -3,6 +3,7 @@ package com.sshterm.app
 import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
+import android.view.WindowManager
 import android.widget.Button
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
@@ -33,6 +34,10 @@ class TerminalActivity : AppCompatActivity() {
             finish()
             return
         }
+
+        // Finché il terminale è collegato e visibile, impedisce lo standby dello schermo.
+        // In questo modo Android non sospende la sessione SSH durante comandi lunghi.
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         setupQuickCommandsBar()
         startReadingOutput()
@@ -183,6 +188,8 @@ class TerminalActivity : AppCompatActivity() {
     }
 
     private fun disconnectAndReturnToLogin() {
+        // Dopo la disconnessione il telefono può tornare al normale timeout schermo.
+        window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 manager?.disconnect()

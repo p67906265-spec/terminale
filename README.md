@@ -14,3 +14,6 @@ Aggiornamento 1.4: tasti con colore blu ciclamino per migliore visibilità.
 
 
 Aggiornamento 1.5: Indietro/Home lasciano attiva la sessione SSH; aggiunto pulsante Disconnetti.
+
+
+Aggiornamento 1.7: mantiene lo schermo attivo durante una sessione SSH aperta per evitare disconnessioni dovute allo standby.
