@@ -17,3 +17,6 @@ Aggiornamento 1.5: Indietro/Home lasciano attiva la sessione SSH; aggiunto pulsa
 
 
 Aggiornamento 1.7: mantiene lo schermo attivo durante una sessione SSH aperta per evitare disconnessioni dovute allo standby.
+
+
+Aggiornamento 1.8: nuova icona app ispirata all'estetica Matrix, senza usare il logo ufficiale.

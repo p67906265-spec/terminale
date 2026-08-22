@@ -10,4 +10,8 @@
     <color name="matrix_green">#33FF33</color>
     <color name="matrix_error">#FF6E6E</color>
     <color name="button_text_light">#F3FCFF</color>
+    <color name="icon_matrix_bg">#051109</color>
+    <color name="icon_matrix_rain">#39FF72</color>
+    <color name="icon_matrix_rain_soft">#1ED760</color>
+    <color name="icon_matrix_symbol">#9BFFD1</color>
 </resources>

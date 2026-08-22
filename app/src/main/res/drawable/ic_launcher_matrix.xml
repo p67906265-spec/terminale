@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <path
+        android:fillColor="@color/icon_matrix_bg"
+        android:pathData="M20,8h68c6.6,0 12,5.4 12,12v68c0,6.6 -5.4,12 -12,12H20c-6.6,0 -12,-5.4 -12,-12V20c0,-6.6 5.4,-12 12,-12z" />
+
+    <!-- digital rain background -->
+    <path android:fillColor="@color/icon_matrix_rain_soft" android:fillAlpha="0.45" android:pathData="M25,16h3v24h-3z"/>
+    <path android:fillColor="@color/icon_matrix_rain" android:fillAlpha="0.28" android:pathData="M25,43h3v12h-3z"/>
+    <path android:fillColor="@color/icon_matrix_rain_soft" android:fillAlpha="0.45" android:pathData="M34,14h2v20h-2z"/>
+    <path android:fillColor="@color/icon_matrix_rain" android:fillAlpha="0.30" android:pathData="M34,38h2v14h-2z"/>
+    <path android:fillColor="@color/icon_matrix_rain_soft" android:fillAlpha="0.40" android:pathData="M42,18h2v15h-2z"/>
+    <path android:fillColor="@color/icon_matrix_rain" android:fillAlpha="0.28" android:pathData="M42,36h2v10h-2z"/>
+    <path android:fillColor="@color/icon_matrix_rain_soft" android:fillAlpha="0.42" android:pathData="M50,13h3v18h-3z"/>
+    <path android:fillColor="@color/icon_matrix_rain" android:fillAlpha="0.30" android:pathData="M50,35h3v13h-3z"/>
+    <path android:fillColor="@color/icon_matrix_rain_soft" android:fillAlpha="0.38" android:pathData="M58,16h2v22h-2z"/>
+    <path android:fillColor="@color/icon_matrix_rain" android:fillAlpha="0.28" android:pathData="M58,41h2v11h-2z"/>
+    <path android:fillColor="@color/icon_matrix_rain_soft" android:fillAlpha="0.44" android:pathData="M67,14h3v24h-3z"/>
+    <path android:fillColor="@color/icon_matrix_rain" android:fillAlpha="0.28" android:pathData="M67,42h3v13h-3z"/>
+    <path android:fillColor="@color/icon_matrix_rain_soft" android:fillAlpha="0.42" android:pathData="M76,17h2v18h-2z"/>
+    <path android:fillColor="@color/icon_matrix_rain" android:fillAlpha="0.30" android:pathData="M76,39h2v12h-2z"/>
+    <path android:fillColor="@color/icon_matrix_rain_soft" android:fillAlpha="0.44" android:pathData="M84,15h3v22h-3z"/>
+    <path android:fillColor="@color/icon_matrix_rain" android:fillAlpha="0.28" android:pathData="M84,40h3v12h-3z"/>
+
+    <!-- terminal window -->
+    <path
+        android:fillColor="#0A1A10"
+        android:strokeColor="@color/icon_matrix_rain"
+        android:strokeWidth="3"
+        android:pathData="M26,30h56c4.4,0 8,3.6 8,8v34c0,4.4 -3.6,8 -8,8H26c-4.4,0 -8,-3.6 -8,-8V38c0,-4.4 3.6,-8 8,-8z" />
+
+    <path android:fillColor="@color/icon_matrix_rain" android:pathData="M28,35h52v4H28z"/>
+    <path android:fillColor="@color/icon_matrix_bg" android:pathData="M32,36.5m-1.7,0a1.7,1.7 0 1,0 3.4,0a1.7,1.7 0 1,0 -3.4,0"/>
+    <path android:fillColor="@color/icon_matrix_bg" android:pathData="M38,36.5m-1.7,0a1.7,1.7 0 1,0 3.4,0a1.7,1.7 0 1,0 -3.4,0"/>
+
+    <!-- >_ symbol -->
+    <path android:fillColor="@color/icon_matrix_symbol" android:pathData="M35,49l10,8 -10,8 -2.5,-3 6.2,-5 -6.2,-5z"/>
+    <path android:fillColor="@color/icon_matrix_symbol" android:pathData="M50,63h17v4H50z"/>
+    <path android:fillColor="@color/icon_matrix_rain" android:fillAlpha="0.75" android:pathData="M50,50h20v4H50z"/>
+    <path android:fillColor="@color/icon_matrix_rain" android:fillAlpha="0.55" android:pathData="M50,56h14v3H50z"/>
+
+</vector>
