@@ -57,7 +57,7 @@ class TerminalActivity : AppCompatActivity() {
         commands.forEach { qc ->
             val btn = Button(this).apply {
                 text = qc.label
-                setOnClickListener { manager?.sendCommand(qc.command) }
+                setOnClickListener { sendCommandSafely(qc.command) }
             }
             binding.layoutQuickCommands.addView(btn)
         }
@@ -66,8 +66,34 @@ class TerminalActivity : AppCompatActivity() {
     private fun sendTypedCommand() {
         val text = binding.editCommand.text.toString()
         if (text.isNotEmpty()) {
-            manager?.sendCommand(text)
             binding.editCommand.setText("")
+            sendCommandSafely(text)
+        }
+    }
+
+    /**
+     * Tutte le scritture sulla socket SSH devono avvenire fuori dal main thread.
+     * In caso di errore mostriamo il messaggio nel terminale invece di far crashare
+     * TerminalActivity (che altrimenti lascia visibile la LoginActivity sottostante).
+     */
+    private fun sendCommandSafely(command: String) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val activeManager = manager
+                if (activeManager == null || !activeManager.isConnected) {
+                    withContext(Dispatchers.Main) {
+                        appendOutput("\n[Connessione SSH non attiva]\n")
+                    }
+                    return@launch
+                }
+
+                activeManager.sendCommand(command)
+            } catch (e: Exception) {
+                val message = e.message ?: e.javaClass.simpleName
+                withContext(Dispatchers.Main) {
+                    appendOutput("\n[Errore invio comando: $message]\n")
+                }
+            }
         }
     }
 

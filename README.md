@@ -32,3 +32,8 @@ git branch -M main
 git remote add origin https://github.com/<tuo-utente>/SshTerminal.git
 git push -u origin main
 ```
+
+
+## v1.2
+- Fix invio comandi SSH su thread IO per evitare NetworkOnMainThreadException e ritorno inatteso al login.
+- Gli errori di invio vengono mostrati nel terminale senza chiudere la schermata.
