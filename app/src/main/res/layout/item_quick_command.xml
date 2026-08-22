@@ -32,13 +32,18 @@
         android:id="@+id/buttonEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/bg_button_ciclamino_small"
         android:text="Modifica"
+        android:textColor="@color/button_text_light"
         android:textSize="11sp" />
 
     <Button
         android:id="@+id/buttonDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:background="@drawable/bg_button_ciclamino_small"
         android:text="Elimina"
+        android:textColor="@color/button_text_light"
         android:textSize="11sp" />
 </LinearLayout>

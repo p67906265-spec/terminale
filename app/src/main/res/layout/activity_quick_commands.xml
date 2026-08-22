@@ -42,16 +42,20 @@
             android:id="@+id/buttonAdd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_button_ciclamino"
             android:text="Aggiungi comando rapido"
-            android:layout_marginTop="8dp" />
+            android:textColor="@color/button_text_light" />
 
         <Button
             android:id="@+id/buttonCancelEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/bg_button_ciclamino_small"
             android:text="Annulla modifica"
-            android:visibility="gone"
-            android:layout_marginTop="4dp" />
+            android:textColor="@color/button_text_light"
+            android:visibility="gone" />
 
     </LinearLayout>
 

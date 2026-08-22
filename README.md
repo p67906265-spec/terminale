@@ -8,3 +8,9 @@ Client SSH Android per rete locale.
 - Comandi rapidi: aggiunta, modifica ed eliminazione direttamente dall'app.
 - Pulsanti rapidi più compatti e sempre scorrevoli orizzontalmente.
 - Mantiene il fix X25519/BouncyCastle e l'invio SSH fuori dal main thread.
+
+
+Aggiornamento 1.4: tasti con colore blu ciclamino per migliore visibilità.
+
+
+Aggiornamento 1.5: Indietro/Home lasciano attiva la sessione SSH; aggiunto pulsante Disconnetti.

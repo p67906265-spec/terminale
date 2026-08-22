@@ -9,7 +9,7 @@
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#1B1B1B">
+        android:background="#151515">
 
         <LinearLayout
             android:id="@+id/layoutQuickCommands"
@@ -62,13 +62,30 @@
             android:id="@+id/buttonSend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Invia" />
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_button_ciclamino"
+            android:text="Invia"
+            android:textColor="@color/button_text_light" />
 
         <Button
             android:id="@+id/buttonManageQuick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="⚙" />
+            android:layout_marginStart="6dp"
+            android:background="@drawable/bg_button_ciclamino_small"
+            android:text="⚙"
+            android:textColor="@color/button_text_light" />
+
+        <Button
+            android:id="@+id/buttonDisconnect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:background="@drawable/bg_button_ciclamino_small"
+            android:text="Disconnetti"
+            android:textAllCaps="false"
+            android:textColor="@color/button_text_light"
+            android:textSize="10sp" />
 
     </LinearLayout>
 

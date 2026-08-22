@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
+import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.sshterm.app.databinding.ActivityTerminalBinding
@@ -46,6 +48,18 @@ class TerminalActivity : AppCompatActivity() {
         binding.buttonManageQuick.setOnClickListener {
             startActivity(Intent(this, QuickCommandsActivity::class.java))
         }
+
+        // Il tasto Indietro manda l'app in background senza chiudere la sessione SSH.
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                moveTaskToBack(true)
+            }
+        })
+
+        // La sessione si chiude solo quando l'utente lo richiede esplicitamente.
+        binding.buttonDisconnect.setOnClickListener {
+            disconnectAndReturnToLogin()
+        }
     }
 
     override fun onResume() {
@@ -63,7 +77,9 @@ class TerminalActivity : AppCompatActivity() {
                 textSize = 12f
                 minWidth = 0
                 minimumWidth = 0
-                setPadding(24, 0, 24, 0)
+                background = ContextCompat.getDrawable(this@TerminalActivity, R.drawable.bg_button_ciclamino)
+                setTextColor(ContextCompat.getColor(this@TerminalActivity, R.color.button_text_light))
+                setPadding(dpToPx(16), 0, dpToPx(16), 0)
                 setOnClickListener { sendCommandSafely(qc.command) }
             }
             val params = android.widget.LinearLayout.LayoutParams(
@@ -166,11 +182,27 @@ class TerminalActivity : AppCompatActivity() {
         }
     }
 
+    private fun disconnectAndReturnToLogin() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                manager?.disconnect()
+            } finally {
+                SessionHolder.manager = null
+                withContext(Dispatchers.Main) {
+                    val intent = Intent(this@TerminalActivity, LoginActivity::class.java).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                    }
+                    startActivity(intent)
+                    finish()
+                }
+            }
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        if (isFinishing) {
-            manager?.disconnect()
-            SessionHolder.manager = null
-        }
+        // Non disconnettere qui: l'Activity può essere chiusa o mandata in background
+        // mentre la sessione SSH deve rimanere attiva. La chiusura avviene solo da
+        // disconnectAndReturnToLogin().
     }
 }
