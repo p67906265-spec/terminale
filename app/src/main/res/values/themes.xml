@@ -1,7 +1,9 @@
 <resources>
     <style name="Theme.SshTerminal" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">#1B1B1B</item>
-        <item name="colorPrimaryDark">#000000</item>
-        <item name="colorAccent">#33FF33</item>
+        <item name="colorPrimary">@color/matrix_panel</item>
+        <item name="colorPrimaryVariant">@color/matrix_bg</item>
+        <item name="colorSecondary">@color/matrix_cyan</item>
+        <item name="android:statusBarColor">@color/matrix_bg</item>
+        <item name="android:navigationBarColor">@color/matrix_bg</item>
     </style>
 </resources>

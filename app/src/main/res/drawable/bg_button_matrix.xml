@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/matrix_panel_alt" />
+            <corners android:radius="18dp" />
+            <stroke android:width="1.4dp" android:color="@color/matrix_cyan" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/matrix_panel" />
+            <corners android:radius="18dp" />
+            <stroke android:width="1.2dp" android:color="@color/matrix_border" />
+        </shape>
+    </item>
+</selector>

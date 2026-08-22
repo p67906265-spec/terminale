@@ -2,9 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/bg_card_matrix"
+    android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="8dp"
-    android:gravity="center_vertical">
+    android:padding="12dp">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -16,34 +18,42 @@
             android:id="@+id/textLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="16sp" />
+            android:textColor="@color/matrix_text_primary"
+            android:textSize="17sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textCommand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#AAAAAA"
+            android:layout_marginTop="4dp"
             android:fontFamily="monospace"
+            android:textColor="@color/matrix_text_secondary"
             android:textSize="12sp" />
     </LinearLayout>
 
     <Button
         android:id="@+id/buttonEdit"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_button_ciclamino_small"
+        android:layout_height="42dp"
+        android:background="@drawable/bg_button_matrix_small"
+        android:drawableStart="@drawable/ic_matrix_edit"
+        android:drawablePadding="4dp"
         android:text="Modifica"
-        android:textColor="@color/button_text_light"
+        android:textAllCaps="false"
+        android:textColor="@color/matrix_text_primary"
         android:textSize="11sp" />
 
     <Button
         android:id="@+id/buttonDelete"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="42dp"
         android:layout_marginStart="6dp"
-        android:background="@drawable/bg_button_ciclamino_small"
+        android:background="@drawable/bg_button_matrix_small"
+        android:drawableStart="@drawable/ic_matrix_delete"
+        android:drawablePadding="4dp"
         android:text="Elimina"
-        android:textColor="@color/button_text_light"
+        android:textAllCaps="false"
+        android:textColor="@color/matrix_text_primary"
         android:textSize="11sp" />
 </LinearLayout>

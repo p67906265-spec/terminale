@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/matrix_bg"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -9,52 +10,76 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Comandi rapidi"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="12dp" />
+        android:textColor="@color/matrix_text_primary"
+        android:textSize="28sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Personalizza i pulsanti del terminale"
+        android:textColor="@color/matrix_cyan"
+        android:textSize="16sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerCommands"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:layout_marginTop="14dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_card_matrix"
         android:orientation="vertical"
-        android:layout_marginTop="12dp">
+        android:padding="16dp">
 
         <EditText
             android:id="@+id/editLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nome pulsante (es. Riavvia HA)" />
+            android:background="@drawable/bg_input_matrix"
+            android:hint="Nome pulsante (es. Riavvia HA)"
+            android:padding="14dp"
+            android:textColor="@color/matrix_text_primary"
+            android:textColorHint="@color/matrix_text_secondary" />
 
         <EditText
             android:id="@+id/editCommand"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_input_matrix"
             android:hint="Comando (es. docker restart homeassistant)"
-            android:layout_marginTop="8dp" />
+            android:padding="14dp"
+            android:textColor="@color/matrix_text_primary"
+            android:textColorHint="@color/matrix_text_secondary" />
 
         <Button
             android:id="@+id/buttonAdd"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/bg_button_ciclamino"
+            android:layout_height="52dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_button_matrix"
+            android:drawableStart="@drawable/ic_matrix_add"
+            android:drawablePadding="8dp"
             android:text="Aggiungi comando rapido"
-            android:textColor="@color/button_text_light" />
+            android:textAllCaps="false"
+            android:textColor="@color/matrix_text_primary"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/buttonCancelEdit"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/bg_button_ciclamino_small"
+            android:layout_height="48dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_button_matrix_small"
             android:text="Annulla modifica"
-            android:textColor="@color/button_text_light"
+            android:textAllCaps="false"
+            android:textColor="@color/matrix_text_primary"
             android:visibility="gone" />
 
     </LinearLayout>

@@ -1,91 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#000000">
+    android:background="@color/matrix_bg"
+    android:orientation="vertical">
 
-    <!-- Barra comandi rapidi, scorrevole orizzontalmente -->
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#151515">
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/bg_card_matrix"
+        android:scrollbars="none">
 
         <LinearLayout
             android:id="@+id/layoutQuickCommands"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="6dp" />
+            android:padding="8dp" />
 
     </HorizontalScrollView>
 
-    <!-- Output del terminale -->
     <ScrollView
         android:id="@+id/scrollOutput"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/bg_card_matrix">
 
         <TextView
             android:id="@+id/textOutput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
-            android:textColor="#33FF33"
-            android:textSize="13sp"
-            android:padding="8dp" />
+            android:padding="12dp"
+            android:textColor="@color/matrix_green"
+            android:textSize="13sp" />
 
     </ScrollView>
 
-    <!-- Riga di input comando -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/bg_card_matrix"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:background="#1B1B1B"
-        android:padding="6dp">
+        android:padding="8dp">
 
         <EditText
             android:id="@+id/editCommand"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/bg_input_matrix"
             android:fontFamily="monospace"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#33FF33"
             android:hint="comando..."
+            android:imeOptions="actionSend"
             android:inputType="text"
-            android:imeOptions="actionSend" />
+            android:padding="12dp"
+            android:textColor="@color/matrix_text_primary"
+            android:textColorHint="@color/matrix_text_secondary" />
 
         <Button
             android:id="@+id/buttonSend"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginStart="8dp"
-            android:background="@drawable/bg_button_ciclamino"
+            android:background="@drawable/bg_button_matrix"
+            android:drawableStart="@drawable/ic_matrix_send"
+            android:drawablePadding="6dp"
             android:text="Invia"
-            android:textColor="@color/button_text_light" />
-
-        <Button
-            android:id="@+id/buttonManageQuick"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:background="@drawable/bg_button_ciclamino_small"
-            android:text="⚙"
-            android:textColor="@color/button_text_light" />
-
-        <Button
-            android:id="@+id/buttonDisconnect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:background="@drawable/bg_button_ciclamino_small"
-            android:text="Disconnetti"
             android:textAllCaps="false"
-            android:textColor="@color/button_text_light"
-            android:textSize="10sp" />
+            android:textColor="@color/matrix_text_primary" />
+
+        <ImageButton
+            android:id="@+id/buttonManageQuick"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="6dp"
+            android:background="@drawable/bg_button_matrix_small"
+            android:contentDescription="Comandi rapidi"
+            android:padding="12dp"
+            android:src="@drawable/ic_matrix_settings"
+            app:tint="@color/matrix_cyan" />
+
+        <ImageButton
+            android:id="@+id/buttonDisconnect"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="6dp"
+            android:background="@drawable/bg_button_matrix_small"
+            android:contentDescription="Disconnetti"
+            android:padding="12dp"
+            android:src="@drawable/ic_matrix_power"
+            app:tint="@color/matrix_cyan" />
 
     </LinearLayout>
 

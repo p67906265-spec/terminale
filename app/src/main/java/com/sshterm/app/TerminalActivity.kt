@@ -77,14 +77,14 @@ class TerminalActivity : AppCompatActivity() {
                 textSize = 12f
                 minWidth = 0
                 minimumWidth = 0
-                background = ContextCompat.getDrawable(this@TerminalActivity, R.drawable.bg_button_ciclamino)
-                setTextColor(ContextCompat.getColor(this@TerminalActivity, R.color.button_text_light))
+                background = ContextCompat.getDrawable(this@TerminalActivity, R.drawable.bg_button_matrix)
+                setTextColor(ContextCompat.getColor(this@TerminalActivity, R.color.matrix_text_primary))
                 setPadding(dpToPx(16), 0, dpToPx(16), 0)
                 setOnClickListener { sendCommandSafely(qc.command) }
             }
             val params = android.widget.LinearLayout.LayoutParams(
                 android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
-                dpToPx(44)
+                dpToPx(46)
             ).apply { marginEnd = dpToPx(6) }
             binding.layoutQuickCommands.addView(btn, params)
         }

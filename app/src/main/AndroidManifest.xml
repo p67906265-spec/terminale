@@ -6,7 +6,7 @@
 
     <application
         android:allowBackup="true"
-        android:label="SSH Terminal"
+        android:label="Terminale"
         android:theme="@style/Theme.SshTerminal"
         android:usesCleartextTraffic="false">
 
