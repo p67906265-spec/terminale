@@ -45,6 +45,14 @@
             android:text="Aggiungi comando rapido"
             android:layout_marginTop="8dp" />
 
+        <Button
+            android:id="@+id/buttonCancelEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Annulla modifica"
+            android:visibility="gone"
+            android:layout_marginTop="4dp" />
+
     </LinearLayout>
 
 </LinearLayout>

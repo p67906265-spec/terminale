@@ -7,6 +7,7 @@ import com.sshterm.app.databinding.ItemQuickCommandBinding
 
 class QuickCommandAdapter(
     private val items: MutableList<QuickCommand>,
+    private val onEdit: (Int) -> Unit,
     private val onDelete: (Int) -> Unit
 ) : RecyclerView.Adapter<QuickCommandAdapter.ViewHolder>() {
 
@@ -24,6 +25,11 @@ class QuickCommandAdapter(
         val item = items[position]
         holder.binding.textLabel.text = item.label
         holder.binding.textCommand.text = item.command
+
+        holder.binding.buttonEdit.setOnClickListener {
+            val pos = holder.bindingAdapterPosition
+            if (pos != RecyclerView.NO_POSITION) onEdit(pos)
+        }
         holder.binding.buttonDelete.setOnClickListener {
             val pos = holder.bindingAdapterPosition
             if (pos != RecyclerView.NO_POSITION) onDelete(pos)

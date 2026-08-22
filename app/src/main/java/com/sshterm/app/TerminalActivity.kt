@@ -18,6 +18,9 @@ class TerminalActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTerminalBinding
     private val manager get() = SessionHolder.manager
 
+    // Le sequenze ANSI possono arrivare spezzate tra due letture SSH.
+    private var ansiPending = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTerminalBinding.inflate(layoutInflater)
@@ -25,7 +28,7 @@ class TerminalActivity : AppCompatActivity() {
 
         val activeManager = manager
         if (activeManager == null || !activeManager.isConnected) {
-            finish() // torna al login se non c'è connessione attiva
+            finish()
             return
         }
 
@@ -47,7 +50,6 @@ class TerminalActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Ricarica la barra nel caso siano stati modificati i comandi rapidi
         setupQuickCommandsBar()
     }
 
@@ -57,11 +59,22 @@ class TerminalActivity : AppCompatActivity() {
         commands.forEach { qc ->
             val btn = Button(this).apply {
                 text = qc.label
+                isAllCaps = false
+                textSize = 12f
+                minWidth = 0
+                minimumWidth = 0
+                setPadding(24, 0, 24, 0)
                 setOnClickListener { sendCommandSafely(qc.command) }
             }
-            binding.layoutQuickCommands.addView(btn)
+            val params = android.widget.LinearLayout.LayoutParams(
+                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+                dpToPx(44)
+            ).apply { marginEnd = dpToPx(6) }
+            binding.layoutQuickCommands.addView(btn, params)
         }
     }
+
+    private fun dpToPx(dp: Int): Int = (dp * resources.displayMetrics.density).toInt()
 
     private fun sendTypedCommand() {
         val text = binding.editCommand.text.toString()
@@ -71,11 +84,6 @@ class TerminalActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Tutte le scritture sulla socket SSH devono avvenire fuori dal main thread.
-     * In caso di errore mostriamo il messaggio nel terminale invece di far crashare
-     * TerminalActivity (che altrimenti lascia visibile la LoginActivity sottostante).
-     */
     private fun sendCommandSafely(command: String) {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
@@ -86,7 +94,6 @@ class TerminalActivity : AppCompatActivity() {
                     }
                     return@launch
                 }
-
                 activeManager.sendCommand(command)
             } catch (e: Exception) {
                 val message = e.message ?: e.javaClass.simpleName
@@ -106,13 +113,50 @@ class TerminalActivity : AppCompatActivity() {
                 try {
                     val read = reader.read(buffer)
                     if (read == -1) break
-                    val chunk = String(buffer, 0, read)
-                    withContext(Dispatchers.Main) { appendOutput(chunk) }
-                } catch (e: Exception) {
+                    val raw = String(buffer, 0, read)
+                    val clean = cleanAnsi(raw)
+                    if (clean.isNotEmpty()) {
+                        withContext(Dispatchers.Main) { appendOutput(clean) }
+                    }
+                } catch (_: Exception) {
                     break
                 }
             }
         }
+    }
+
+    /**
+     * Rimuove le sequenze di controllo ANSI/VT100 che una normale TextView non sa
+     * interpretare (colori \u001B[01;34m, bracketed paste \u001B[?2004h, ecc.).
+     * Conserva un piccolo frammento finale se una sequenza arriva spezzata.
+     */
+    @Synchronized
+    private fun cleanAnsi(chunk: String): String {
+        var text = ansiPending + chunk
+        ansiPending = ""
+
+        val lastEsc = text.lastIndexOf('\u001B')
+        if (lastEsc >= 0) {
+            val tail = text.substring(lastEsc)
+            // Se il frammento ESC finale non contiene ancora un terminatore CSI/OSC,
+            // lo teniamo per la lettura successiva.
+            val completeCsi = Regex("^\\u001B\\[[0-?]*[ -/]*[@-~]").containsMatchIn(tail)
+            val completeOsc = tail.contains("\u0007") || tail.contains("\u001B\\")
+            if (!completeCsi && !completeOsc && tail.length < 64) {
+                ansiPending = tail
+                text = text.substring(0, lastEsc)
+            }
+        }
+
+        // OSC: ESC ] ... BEL oppure ESC \\
+        text = text.replace(Regex("\\u001B\\][^\\u0007]*(?:\\u0007|\\u001B\\\\)"), "")
+        // CSI: ESC [ parametri/intermedi/finale (copre colori, erase, cursor, ?2004h/l, ecc.)
+        text = text.replace(Regex("\\u001B\\[[0-?]*[ -/]*[@-~]"), "")
+        // Escape a due caratteri rimasti.
+        text = text.replace(Regex("\\u001B[@-_]"), "")
+        // Alcuni controlli singoli non stampabili, lasciando TAB/CR/LF.
+        text = text.filter { it == '\n' || it == '\r' || it == '\t' || it.code >= 32 }
+        return text
     }
 
     private fun appendOutput(text: String) {

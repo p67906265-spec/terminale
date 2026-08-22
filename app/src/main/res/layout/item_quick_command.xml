@@ -14,24 +14,31 @@
 
         <TextView
             android:id="@+id/textLabel"
-            android:textStyle="bold"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/textCommand"
-            android:textColor="#666666"
-            android:fontFamily="monospace"
-            android:textSize="12sp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
+            android:layout_height="wrap_content"
+            android:textColor="#AAAAAA"
+            android:fontFamily="monospace"
+            android:textSize="12sp" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Modifica"
+        android:textSize="11sp" />
 
     <Button
         android:id="@+id/buttonDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Elimina" />
-
+        android:text="Elimina"
+        android:textSize="11sp" />
 </LinearLayout>
