@@ -7,6 +7,8 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.security.Security
+import org.bouncycastle.jce.provider.BouncyCastleProvider
 
 /**
  * Gestisce una connessione SSH verso il PC Linux e mantiene aperta
@@ -36,6 +38,11 @@ class SshManager {
      */
     @Throws(Exception::class)
     fun connect(host: String, username: String, password: String, port: Int = 22) {
+        // Android include un provider BC ridotto che, su alcuni dispositivi,
+        // non espone X25519. SSHJ puo' negoziare X25519 durante il key exchange.
+        // Sostituiamo quindi il provider Android con la versione completa inclusa nell'app.
+        ensureModernBouncyCastle()
+
         val c = SSHClient()
         c.addHostKeyVerifier(PromiscuousVerifier())
         c.connectTimeout = 8000
@@ -70,6 +77,16 @@ class SshManager {
         val out = outputStream ?: return
         out.write(text.toByteArray())
         out.flush()
+    }
+
+    private fun ensureModernBouncyCastle() {
+        val current = Security.getProvider(BouncyCastleProvider.PROVIDER_NAME)
+        if (current == null || current.javaClass != BouncyCastleProvider::class.java) {
+            if (current != null) {
+                Security.removeProvider(BouncyCastleProvider.PROVIDER_NAME)
+            }
+            Security.insertProviderAt(BouncyCastleProvider(), 1)
+        }
     }
 
     fun disconnect() {
