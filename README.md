@@ -46,3 +46,14 @@ Aggiornamento 1.12:
 - Tailscale accetta IP 100.x.x.x oppure nome MagicDNS;
 - nessun token o API Tailscale viene salvato nell'app;
 - firma release permanente invariata.
+
+Fix 1.12: corretto XML della schermata Login/Tailscale.
+
+
+Aggiornamento 1.13:
+- blocco dell'app con impronta/biometria o credenziale sicura del dispositivo;
+- password SSH opzionalmente salvate cifrate con AES/GCM;
+- chiave di cifratura custodita nell'Android Keystore;
+- password locale e Tailscale memorizzate separatamente;
+- la password non viene mai scritta nel repository o nei log;
+- firma release permanente invariata.

@@ -23,7 +23,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:id="@+id/textConnectionSubtitle"\n            android:text="Connessione SSH locale"
+            android:id="@+id/textConnectionSubtitle"
+            android:text="Connessione SSH locale"
             android:textColor="@color/matrix_cyan"
             android:textSize="18sp" />
 
@@ -136,6 +137,16 @@
                 android:padding="14dp"
                 android:textColor="@color/matrix_text_primary"
                 android:textColorHint="@color/matrix_text_secondary" />
+
+            <CheckBox
+                android:id="@+id/checkSavePassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:buttonTint="@color/matrix_cyan"
+                android:text="Salva password cifrata sul dispositivo"
+                android:textColor="@color/matrix_text_secondary"
+                android:textSize="13sp" />
 
             <Button
                 android:id="@+id/buttonConnect"
