@@ -26,3 +26,5 @@ Aggiornamento 1.9:
 - Firma visibile nelle impostazioni: Paolo Free 1.0.
 - Build release firmata con chiave permanente tramite GitHub Secrets.
 - Dopo la prima installazione della versione firmata, gli aggiornamenti successivi possono essere installati sopra senza disinstallare.
+
+Fix release 1.9: disattivata minificazione R8 per compatibilita con la libreria SSH; firma permanente invariata.
