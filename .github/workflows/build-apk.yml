@@ -1,4 +1,4 @@
-name: Build APK
+name: Build Signed APK
 
 on:
   push:
@@ -23,12 +23,28 @@ jobs:
         with:
           gradle-version: '8.7'
 
-      - name: Build debug APK
-        run: gradle :app:assembleDebug --stacktrace
+      - name: Restore permanent signing key
+        shell: bash
+        env:
+          TERMINALE_KEYSTORE_BASE64: ${{ secrets.TERMINALE_KEYSTORE_BASE64 }}
+        run: |
+          test -n "$TERMINALE_KEYSTORE_BASE64" || (echo "Missing TERMINALE_KEYSTORE_BASE64 secret" && exit 1)
+          echo "$TERMINALE_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/terminale-release.jks"
 
-      - name: Upload APK
+      - name: Build signed release APK
+        env:
+          TERMINALE_KEYSTORE_PATH: ${{ runner.temp }}/terminale-release.jks
+          TERMINALE_KEYSTORE_PASSWORD: ${{ secrets.TERMINALE_KEYSTORE_PASSWORD }}
+          TERMINALE_KEY_ALIAS: ${{ secrets.TERMINALE_KEY_ALIAS }}
+          TERMINALE_KEY_PASSWORD: ${{ secrets.TERMINALE_KEY_PASSWORD }}
+        run: gradle :app:assembleRelease --stacktrace
+
+      - name: Rename APK
+        run: cp app/build/outputs/apk/release/app-release.apk Terminale-v1.9-release.apk
+
+      - name: Upload signed APK
         uses: actions/upload-artifact@v4
         with:
-          name: Terminale-debug-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: Terminale-v1.9-signed-apk
+          path: Terminale-v1.9-release.apk
           if-no-files-found: error

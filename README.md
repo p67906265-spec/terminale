@@ -20,3 +20,9 @@ Aggiornamento 1.7: mantiene lo schermo attivo durante una sessione SSH aperta pe
 
 
 Aggiornamento 1.8: nuova icona app ispirata all'estetica Matrix, senza usare il logo ufficiale.
+
+
+Aggiornamento 1.9:
+- Firma visibile nelle impostazioni: Paolo Free 1.0.
+- Build release firmata con chiave permanente tramite GitHub Secrets.
+- Dopo la prima installazione della versione firmata, gli aggiornamenti successivi possono essere installati sopra senza disinstallare.
