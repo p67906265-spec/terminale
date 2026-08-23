@@ -22,9 +22,6 @@ class LoginActivity : AppCompatActivity() {
 
         binding.root.visibility = View.INVISIBLE
 
-        binding.editUsername.setText(AppStorage.loadLastUser(this))
-        binding.editPort.setText(AppStorage.loadLastPort(this).toString())
-
         val lastMode = AppStorage.loadConnectionMode(this)
         binding.radioTailscale.isChecked = lastMode == "tailscale"
         binding.radioLocal.isChecked = lastMode != "tailscale"
@@ -62,20 +59,24 @@ class LoginActivity : AppCompatActivity() {
 
         binding.textConnectionSubtitle.text =
             if (tailscale) "Connessione SSH via Tailscale" else "Connessione SSH locale"
+
         binding.textConnectionHelp.text =
             if (tailscale) "Tailscale deve essere attivo. Inserisci IP 100.x.x.x o nome MagicDNS."
             else "Usa l'IP locale del server Linux."
+
         binding.editHost.hint =
             if (tailscale) "IP Tailscale o nome MagicDNS" else "Indirizzo IP locale"
 
-        val savedHost = if (tailscale) {
-            AppStorage.loadTailscaleHost(this)
-        } else {
-            AppStorage.loadLastHost(this)
-        }
-        binding.editHost.setText(savedHost)
+        binding.editHost.setText(AppStorage.loadHost(this, tailscale))
+        binding.editUsername.setText(AppStorage.loadUser(this, tailscale))
+        binding.editPort.setText(AppStorage.loadPort(this, tailscale).toString())
 
-        val savedPassword = SecurePasswordStorage.loadPassword(this, tailscale)
+        val savedPassword = try {
+            SecurePasswordStorage.loadPassword(this, tailscale)
+        } catch (_: Exception) {
+            null
+        }
+
         binding.editPassword.setText(savedPassword ?: "")
         binding.checkSavePassword.isChecked = savedPassword != null
     }
@@ -93,18 +94,29 @@ class LoginActivity : AppCompatActivity() {
             return
         }
 
+        // Salva sempre host, porta, utente e modalità PRIMA del tentativo.
+        AppStorage.saveConnectionProfile(
+            this,
+            host = host,
+            user = user,
+            port = port,
+            tailscale = tailscale
+        )
+
         binding.textError.text = ""
         binding.progressBar.visibility = View.VISIBLE
         binding.buttonConnect.isEnabled = false
 
         lifecycleScope.launch {
             val manager = SshManager(applicationContext)
+
             val error = withContext(Dispatchers.IO) {
                 try {
                     manager.connect(host, user, pass, port)
                     null
                 } catch (e: Exception) {
-                    e.message ?: "Errore di connessione"
+                    try { manager.disconnect() } catch (_: Exception) {}
+                    e.message ?: e.javaClass.simpleName
                 }
             }
 
@@ -113,32 +125,29 @@ class LoginActivity : AppCompatActivity() {
 
             if (error != null) {
                 binding.textError.text = error
-            } else {
-                AppStorage.saveLastConnection(
-                    this@LoginActivity,
-                    host,
-                    user,
-                    port,
-                    tailscale = tailscale
-                )
-
-                if (binding.checkSavePassword.isChecked) {
-                    SecurePasswordStorage.savePassword(this@LoginActivity, tailscale, pass)
-                } else {
-                    SecurePasswordStorage.clearPassword(this@LoginActivity, tailscale)
-                }
-
-                SessionHolder.manager = manager
-                startActivity(Intent(this@LoginActivity, TerminalActivity::class.java))
+                return@launch
             }
+
+            // Il salvataggio della password NON deve mai far cadere una connessione SSH riuscita.
+            if (binding.checkSavePassword.isChecked) {
+                try {
+                    SecurePasswordStorage.savePassword(this@LoginActivity, tailscale, pass)
+                } catch (_: Exception) {
+                    // Se la finestra biometrica del Keystore è scaduta, continua comunque.
+                }
+            } else {
+                try {
+                    SecurePasswordStorage.clearPassword(this@LoginActivity, tailscale)
+                } catch (_: Exception) {
+                }
+            }
+
+            SessionHolder.manager = manager
+            startActivity(Intent(this@LoginActivity, TerminalActivity::class.java))
         }
     }
 }
 
-/**
- * Tiene in memoria la connessione SSH attiva così TerminalActivity
- * può usarla senza dover riconnettersi. Semplice per un'app a singola sessione.
- */
 object SessionHolder {
     var manager: SshManager? = null
 }

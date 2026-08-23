@@ -76,3 +76,13 @@ Aggiornamento 1.15:
 - barra dei comandi rapidi trasformata in tendina richiudibile;
 - la tendina parte chiusa per lasciare più spazio al terminale;
 - firma release permanente e protezioni biometriche invariate.
+
+
+Aggiornamento 1.16:
+- profili completi e separati per Locale e Tailscale;
+- ogni profilo memorizza host, porta e utente;
+- password cifrata opzionale separata per ogni profilo;
+- i parametri vengono salvati anche se il tentativo di connessione fallisce;
+- corretto possibile crash quando il Keystore richiede una nuova autenticazione durante il salvataggio password;
+- una connessione SSH riuscita non viene più persa per un errore di salvataggio credenziali;
+- firma permanente invariata.
