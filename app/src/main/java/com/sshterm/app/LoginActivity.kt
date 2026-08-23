@@ -4,9 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.biometric.BiometricManager
-import androidx.biometric.BiometricPrompt
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.sshterm.app.databinding.ActivityLoginBinding
 import kotlinx.coroutines.Dispatchers
@@ -42,55 +39,22 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun authenticate() {
-        val authenticators =
-            BiometricManager.Authenticators.BIOMETRIC_STRONG or
-                BiometricManager.Authenticators.DEVICE_CREDENTIAL
-
-        val biometricManager = BiometricManager.from(this)
-        when (biometricManager.canAuthenticate(authenticators)) {
-            BiometricManager.BIOMETRIC_SUCCESS -> {
-                val executor = ContextCompat.getMainExecutor(this)
-                val prompt = BiometricPrompt(
-                    this,
-                    executor,
-                    object : BiometricPrompt.AuthenticationCallback() {
-                        override fun onAuthenticationSucceeded(
-                            result: BiometricPrompt.AuthenticationResult
-                        ) {
-                            super.onAuthenticationSucceeded(result)
-                            unlocked = true
-                            binding.root.visibility = View.VISIBLE
-                            refreshConnectionMode()
-                        }
-
-                        override fun onAuthenticationError(
-                            errorCode: Int,
-                            errString: CharSequence
-                        ) {
-                            super.onAuthenticationError(errorCode, errString)
-                            if (!unlocked) finish()
-                        }
-                    }
-                )
-
-                val promptInfo = BiometricPrompt.PromptInfo.Builder()
-                    .setTitle("Terminale")
-                    .setSubtitle("Sblocca con impronta o blocco schermo")
-                    .setAllowedAuthenticators(authenticators)
-                    .build()
-
-                prompt.authenticate(promptInfo)
-            }
-
-            else -> {
-                // Se il dispositivo non ha biometria/blocco sicuro configurato,
-                // non mostrare le credenziali salvate.
-                binding.textError.text =
-                    "Configura impronta o blocco schermo sicuro per usare Terminale."
+        AppBiometricLock.authenticate(
+            activity = this,
+            onSuccess = {
+                unlocked = true
                 binding.root.visibility = View.VISIBLE
-                binding.buttonConnect.isEnabled = false
+                refreshConnectionMode()
+            },
+            onFailure = {
+                if (!unlocked) {
+                    binding.root.visibility = View.VISIBLE
+                    binding.textError.text =
+                        "Configura o usa impronta/blocco schermo sicuro per accedere."
+                    binding.buttonConnect.isEnabled = false
+                }
             }
-        }
+        )
     }
 
     private fun refreshConnectionMode() {

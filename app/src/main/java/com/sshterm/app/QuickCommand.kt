@@ -62,7 +62,7 @@ object AppStorage {
             .putString(KEY_USER, user)
             .putInt(KEY_PORT, port)
         editor.apply()
-        // Nota: la password NON viene salvata per motivi di sicurezza.
+        // La password, se l’utente lo sceglie, viene salvata separatamente e cifrata tramite SecurePasswordStorage.
     }
 
     fun loadLastHost(context: Context): String =

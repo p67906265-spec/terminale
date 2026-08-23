@@ -19,6 +19,10 @@ import java.io.InputStreamReader
 class TerminalActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTerminalBinding
+
+    private var terminalUnlocked = true
+    private var backgroundedAt: Long = 0L
+    private var firstStart = true
     private val manager get() = SessionHolder.manager
 
     // Le sequenze ANSI possono arrivare spezzate tra due letture SSH.
@@ -203,6 +207,47 @@ class TerminalActivity : AppCompatActivity() {
                     finish()
                 }
             }
+        }
+    }
+
+
+    override fun onStop() {
+        super.onStop()
+        // Segna quando il terminale non è più visibile. La sessione SSH resta viva.
+        if (!isChangingConfigurations) {
+            backgroundedAt = System.currentTimeMillis()
+            terminalUnlocked = false
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        if (firstStart) {
+            firstStart = false
+            terminalUnlocked = true
+            return
+        }
+
+        // Se il terminale torna visibile dopo essere stato in background,
+        // richiede nuovamente impronta/credenziale del dispositivo.
+        if (!terminalUnlocked && backgroundedAt > 0L) {
+            binding.root.visibility = View.INVISIBLE
+
+            AppBiometricLock.authenticate(
+                activity = this,
+                subtitle = "Autorizza il ritorno alla sessione SSH",
+                onSuccess = {
+                    terminalUnlocked = true
+                    backgroundedAt = 0L
+                    binding.root.visibility = View.VISIBLE
+                },
+                onFailure = {
+                    // Non chiude la sessione SSH: lascia semplicemente il terminale bloccato.
+                    binding.root.visibility = View.INVISIBLE
+                    moveTaskToBack(true)
+                }
+            )
         }
     }
 

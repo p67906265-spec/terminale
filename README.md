@@ -57,3 +57,13 @@ Aggiornamento 1.13:
 - password locale e Tailscale memorizzate separatamente;
 - la password non viene mai scritta nel repository o nei log;
 - firma release permanente invariata.
+
+
+Aggiornamento 1.14:
+- nuova autenticazione biometrica quando Terminale torna dal background/app recenti;
+- la sessione SSH resta viva ma l'interfaccia rimane bloccata fino all'autenticazione;
+- chiave AES Android Keystore vincolata a recente autenticazione utente;
+- aggiornata la documentazione interna sul salvataggio password;
+- firma release permanente invariata.
+
+- migrazione automatica delle password 1.13 alla nuova chiave Keystore V2 vincolata all'autenticazione.
