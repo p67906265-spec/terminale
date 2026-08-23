@@ -11,8 +11,8 @@ android {
         applicationId "com.sshterm.app"
         minSdk 24
         targetSdk 34
-        versionCode 9
-        versionName "1.9"
+        versionCode 10
+        versionName "1.10"
     }
 
     signingConfigs {
@@ -30,7 +30,7 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

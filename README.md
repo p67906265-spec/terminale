@@ -28,3 +28,10 @@ Aggiornamento 1.9:
 - Dopo la prima installazione della versione firmata, gli aggiornamenti successivi possono essere installati sopra senza disinstallare.
 
 Fix release 1.9: disattivata minificazione R8 per compatibilita con la libreria SSH; firma permanente invariata.
+
+
+Aggiornamento 1.10:
+- riattivata minificazione R8 con regola mirata per SSHJ/EdDSA;
+- rimossa l'accettazione indiscriminata delle host key SSH;
+- aggiunta verifica TOFU della chiave del server;
+- firma release permanente invariata.

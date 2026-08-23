@@ -1,8 +1,12 @@
 package com.sshterm.app
 
+import android.content.Context
+import android.util.Base64
+import java.security.MessageDigest
+import java.security.PublicKey
 import net.schmizz.sshj.SSHClient
 import net.schmizz.sshj.connection.channel.direct.Session
-import net.schmizz.sshj.transport.verification.PromiscuousVerifier
+import net.schmizz.sshj.transport.verification.HostKeyVerifier
 import java.io.InputStream
 import java.io.OutputStream
 import java.io.BufferedReader
@@ -18,7 +22,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider
  * senza verifica. Va bene per una rete domestica fidata, ma se in futuro
  * si vuole più sicurezza si può passare a un verificatore con host key fissa.
  */
-class SshManager {
+class SshManager(private val context: Context) {
 
     private var client: SSHClient? = null
     private var session: Session? = null
@@ -44,7 +48,7 @@ class SshManager {
         ensureModernBouncyCastle()
 
         val c = SSHClient()
-        c.addHostKeyVerifier(PromiscuousVerifier())
+        c.addHostKeyVerifier(TofuHostKeyVerifier(context))
         c.connectTimeout = 8000
         c.connect(host, port)
         c.authPassword(username, password)
@@ -86,6 +90,29 @@ class SshManager {
                 Security.removeProvider(BouncyCastleProvider.PROVIDER_NAME)
             }
             Security.insertProviderAt(BouncyCastleProvider(), 1)
+        }
+    }
+
+    private class TofuHostKeyVerifier(context: Context) : HostKeyVerifier {
+        private val prefs = context.getSharedPreferences("ssh_host_keys", Context.MODE_PRIVATE)
+
+        override fun verify(hostname: String, port: Int, key: PublicKey): Boolean {
+            val id = "$hostname:$port"
+            val fingerprint = sha256Fingerprint(key)
+            val saved = prefs.getString(id, null)
+            return if (saved == null) {
+                prefs.edit().putString(id, fingerprint).apply()
+                true
+            } else {
+                saved == fingerprint
+            }
+        }
+
+        override fun findExistingAlgorithms(hostname: String, port: Int): List<String> = emptyList()
+
+        private fun sha256Fingerprint(key: PublicKey): String {
+            val digest = MessageDigest.getInstance("SHA-256").digest(key.encoded)
+            return "SHA256:" + Base64.encodeToString(digest, Base64.NO_WRAP)
         }
     }
 

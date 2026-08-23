@@ -44,7 +44,7 @@ class LoginActivity : AppCompatActivity() {
         binding.buttonConnect.isEnabled = false
 
         lifecycleScope.launch {
-            val manager = SshManager()
+            val manager = SshManager(applicationContext)
             val error = withContext(Dispatchers.IO) {
                 try {
                     manager.connect(host, user, pass, port)
