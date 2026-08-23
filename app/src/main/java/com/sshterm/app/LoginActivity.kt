@@ -128,24 +128,53 @@ class LoginActivity : AppCompatActivity() {
                 return@launch
             }
 
-            // Il salvataggio della password NON deve mai far cadere una connessione SSH riuscita.
             if (binding.checkSavePassword.isChecked) {
                 try {
                     SecurePasswordStorage.savePassword(this@LoginActivity, tailscale, pass)
+                    openTerminal(manager)
                 } catch (_: Exception) {
-                    // Se la finestra biometrica del Keystore è scaduta, continua comunque.
+                    // La finestra di autorizzazione del Keystore può essere scaduta
+                    // durante il collegamento SSH. Richiedi di nuovo l'autenticazione
+                    // e salva realmente la password prima di entrare nel terminale.
+                    AppBiometricLock.authenticate(
+                        activity = this@LoginActivity,
+                        subtitle = "Autorizza il salvataggio della password",
+                        onSuccess = {
+                            try {
+                                SecurePasswordStorage.savePassword(
+                                    this@LoginActivity,
+                                    tailscale,
+                                    pass
+                                )
+                                openTerminal(manager)
+                            } catch (e: Exception) {
+                                binding.textError.text =
+                                    "Connessione riuscita, ma password non salvata: " +
+                                        (e.message ?: e.javaClass.simpleName)
+                                openTerminal(manager)
+                            }
+                        },
+                        onFailure = {
+                            // La connessione SSH resta valida anche se l'utente
+                            // annulla il salvataggio biometrico.
+                            openTerminal(manager)
+                        }
+                    )
                 }
             } else {
                 try {
                     SecurePasswordStorage.clearPassword(this@LoginActivity, tailscale)
                 } catch (_: Exception) {
                 }
+                openTerminal(manager)
             }
-
-            SessionHolder.manager = manager
-            startActivity(Intent(this@LoginActivity, TerminalActivity::class.java))
         }
     }
+    private fun openTerminal(manager: SshManager) {
+        SessionHolder.manager = manager
+        startActivity(Intent(this, TerminalActivity::class.java))
+    }
+
 }
 
 object SessionHolder {

@@ -86,3 +86,9 @@ Aggiornamento 1.16:
 - corretto possibile crash quando il Keystore richiede una nuova autenticazione durante il salvataggio password;
 - una connessione SSH riuscita non viene più persa per un errore di salvataggio credenziali;
 - firma permanente invariata.
+
+Aggiornamento 1.17:
+- corretto il salvataggio password cifrata quando l'autorizzazione Keystore è scaduta;
+- se necessario viene richiesta di nuovo l'impronta al momento del salvataggio;
+- la password salvata resta disponibile al successivo avvio dopo l'autenticazione biometrica;
+- firma permanente invariata.
