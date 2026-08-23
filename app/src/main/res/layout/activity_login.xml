@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Connessione SSH locale"
+            android:id="@+id/textConnectionSubtitle"\n            android:text="Connessione SSH locale"
             android:textColor="@color/matrix_cyan"
             android:textSize="18sp" />
 
@@ -50,6 +50,41 @@
                 android:text="Inserisci i dati del server Linux"
                 android:textColor="@color/matrix_text_secondary"
                 android:textSize="16sp" />
+
+            <RadioGroup
+                android:id="@+id/radioConnectionMode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioLocal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/matrix_cyan"
+                    android:text="Locale"
+                    android:textColor="@color/matrix_text_primary" />
+
+                <RadioButton
+                    android:id="@+id/radioTailscale"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/matrix_cyan"
+                    android:text="Tailscale"
+                    android:textColor="@color/matrix_text_primary" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/textConnectionHelp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Usa l'IP locale del server."
+                android:textColor="@color/matrix_text_secondary"
+                android:textSize="13sp" />
 
             <EditText
                 android:id="@+id/editHost"

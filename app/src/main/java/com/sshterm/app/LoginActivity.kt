@@ -19,15 +19,42 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Precompila con l'ultima connessione usata (senza password)
-        binding.editHost.setText(AppStorage.loadLastHost(this))
+        // Precompila con l'ultima connessione usata (senza password).
         binding.editUsername.setText(AppStorage.loadLastUser(this))
         binding.editPort.setText(AppStorage.loadLastPort(this).toString())
+
+        val lastMode = AppStorage.loadConnectionMode(this)
+        binding.radioTailscale.isChecked = lastMode == "tailscale"
+        binding.radioLocal.isChecked = lastMode != "tailscale"
+        refreshConnectionMode()
+
+        binding.radioConnectionMode.setOnCheckedChangeListener { _, _ ->
+            refreshConnectionMode()
+        }
 
         binding.buttonConnect.setOnClickListener { attemptConnect() }
     }
 
+    private fun refreshConnectionMode() {
+        val tailscale = binding.radioTailscale.isChecked
+        binding.textConnectionSubtitle.text =
+            if (tailscale) "Connessione SSH via Tailscale" else "Connessione SSH locale"
+        binding.textConnectionHelp.text =
+            if (tailscale) "Tailscale deve essere attivo. Inserisci IP 100.x.x.x o nome MagicDNS."
+            else "Usa l'IP locale del server Linux."
+        binding.editHost.hint =
+            if (tailscale) "IP Tailscale o nome MagicDNS" else "Indirizzo IP locale"
+
+        val savedHost = if (tailscale) {
+            AppStorage.loadTailscaleHost(this)
+        } else {
+            AppStorage.loadLastHost(this)
+        }
+        binding.editHost.setText(savedHost)
+    }
+
     private fun attemptConnect() {
+        val tailscale = binding.radioTailscale.isChecked
         val host = binding.editHost.text.toString().trim()
         val user = binding.editUsername.text.toString().trim()
         val pass = binding.editPassword.text.toString()
@@ -60,7 +87,13 @@ class LoginActivity : AppCompatActivity() {
             if (error != null) {
                 binding.textError.text = error
             } else {
-                AppStorage.saveLastConnection(this@LoginActivity, host, user, port)
+                AppStorage.saveLastConnection(
+                    this@LoginActivity,
+                    host,
+                    user,
+                    port,
+                    tailscale = tailscale
+                )
                 SessionHolder.manager = manager
                 startActivity(Intent(this@LoginActivity, TerminalActivity::class.java))
             }

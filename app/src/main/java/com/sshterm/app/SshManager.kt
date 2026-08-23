@@ -18,9 +18,10 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider
  * Gestisce una connessione SSH verso il PC Linux e mantiene aperta
  * una shell interattiva a cui inviare comandi (digitati o rapidi).
  *
- * NOTA SICUREZZA: usa PromiscuousVerifier, cioè accetta qualsiasi host key
- * senza verifica. Va bene per una rete domestica fidata, ma se in futuro
- * si vuole più sicurezza si può passare a un verificatore con host key fissa.
+ * SICUREZZA HOST KEY: usa Trust On First Use (TOFU).
+ * Alla prima connessione memorizza l'impronta SHA-256 della chiave del server.
+ * Dalle connessioni successive accetta solo la stessa chiave; se cambia,
+ * la connessione viene rifiutata per proteggere da possibili attacchi MITM.
  */
 class SshManager(private val context: Context) {
 

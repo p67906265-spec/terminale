@@ -18,6 +18,8 @@ object AppStorage {
     private const val PREFS = "ssh_terminal_prefs"
     private const val KEY_COMMANDS = "quick_commands"
     private const val KEY_HOST = "last_host"
+    private const val KEY_TAILSCALE_HOST = "last_tailscale_host"
+    private const val KEY_CONNECTION_MODE = "connection_mode"
     private const val KEY_USER = "last_user"
     private const val KEY_PORT = "last_port"
 
@@ -47,18 +49,30 @@ object AppStorage {
             .apply()
     }
 
-    fun saveLastConnection(context: Context, host: String, user: String, port: Int) {
-        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-            .edit()
-            .putString(KEY_HOST, host)
+    fun saveLastConnection(
+        context: Context,
+        host: String,
+        user: String,
+        port: Int,
+        tailscale: Boolean = false
+    ) {
+        val editor = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
+            .putString(if (tailscale) KEY_TAILSCALE_HOST else KEY_HOST, host)
+            .putString(KEY_CONNECTION_MODE, if (tailscale) "tailscale" else "local")
             .putString(KEY_USER, user)
             .putInt(KEY_PORT, port)
-            .apply()
+        editor.apply()
         // Nota: la password NON viene salvata per motivi di sicurezza.
     }
 
     fun loadLastHost(context: Context): String =
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString(KEY_HOST, "") ?: ""
+
+    fun loadTailscaleHost(context: Context): String =
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString(KEY_TAILSCALE_HOST, "") ?: ""
+
+    fun loadConnectionMode(context: Context): String =
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString(KEY_CONNECTION_MODE, "local") ?: "local"
 
     fun loadLastUser(context: Context): String =
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString(KEY_USER, "") ?: ""

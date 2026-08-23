@@ -35,3 +35,14 @@ Aggiornamento 1.10:
 - rimossa l'accettazione indiscriminata delle host key SSH;
 - aggiunta verifica TOFU della chiave del server;
 - firma release permanente invariata.
+
+
+Aggiornamento 1.11: corretto commento sicurezza TOFU in SshManager e aggiornato il nome artifact GitHub Actions alla versione 1.11.
+
+
+Aggiornamento 1.12:
+- aggiunta scelta "Locale / Tailscale" nella schermata di connessione;
+- indirizzo locale e indirizzo Tailscale vengono memorizzati separatamente;
+- Tailscale accetta IP 100.x.x.x oppure nome MagicDNS;
+- nessun token o API Tailscale viene salvato nell'app;
+- firma release permanente invariata.
