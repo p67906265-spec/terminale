@@ -67,3 +67,5 @@ Aggiornamento 1.14:
 - firma release permanente invariata.
 
 - migrazione automatica delle password 1.13 alla nuova chiave Keystore V2 vincolata all'autenticazione.
+
+Fix 1.14: aggiunto import android.view.View in TerminalActivity.
