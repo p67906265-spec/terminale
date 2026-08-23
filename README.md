@@ -69,3 +69,10 @@ Aggiornamento 1.14:
 - migrazione automatica delle password 1.13 alla nuova chiave Keystore V2 vincolata all'autenticazione.
 
 Fix 1.14: aggiunto import android.view.View in TerminalActivity.
+
+
+Aggiornamento 1.15:
+- output del terminale selezionabile con pressione lunga e copiabile con i comandi Android;
+- barra dei comandi rapidi trasformata in tendina richiudibile;
+- la tendina parte chiusa per lasciare più spazio al terminale;
+- firma release permanente e protezioni biometriche invariate.

@@ -40,11 +40,11 @@ jobs:
         run: gradle :app:assembleRelease --stacktrace
 
       - name: Rename APK
-        run: cp app/build/outputs/apk/release/app-release.apk Terminale-v1.14-release.apk
+        run: cp app/build/outputs/apk/release/app-release.apk Terminale-v1.15-release.apk
 
       - name: Upload signed APK
         uses: actions/upload-artifact@v4
         with:
-          name: Terminale-v1.14-signed-apk
-          path: Terminale-v1.14-release.apk
+          name: Terminale-v1.15-signed-apk
+          path: Terminale-v1.15-release.apk
           if-no-files-found: error

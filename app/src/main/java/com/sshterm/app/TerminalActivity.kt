@@ -24,6 +24,7 @@ class TerminalActivity : AppCompatActivity() {
     private var terminalUnlocked = true
     private var backgroundedAt: Long = 0L
     private var firstStart = true
+    private var quickCommandsExpanded = false
     private val manager get() = SessionHolder.manager
 
     // Le sequenze ANSI possono arrivare spezzate tra due letture SSH.
@@ -45,7 +46,13 @@ class TerminalActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         setupQuickCommandsBar()
+        updateQuickCommandsPanel()
         startReadingOutput()
+
+        binding.buttonToggleQuick.setOnClickListener {
+            quickCommandsExpanded = !quickCommandsExpanded
+            updateQuickCommandsPanel()
+        }
 
         binding.buttonSend.setOnClickListener { sendTypedCommand() }
         binding.editCommand.setOnEditorActionListener { _, actionId, _ ->
@@ -75,6 +82,13 @@ class TerminalActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         setupQuickCommandsBar()
+    }
+
+    private fun updateQuickCommandsPanel() {
+        binding.scrollQuickCommands.visibility =
+            if (quickCommandsExpanded) View.VISIBLE else View.GONE
+        binding.buttonToggleQuick.text =
+            if (quickCommandsExpanded) "Comandi rapidi ▲" else "Comandi rapidi ▼"
     }
 
     private fun setupQuickCommandsBar() {
